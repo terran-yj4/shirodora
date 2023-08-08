@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>城ドラ キャラLv 時間計算機</title>
+  <script>
+    var result = () => {
+      var lvs = [0, 60, 120, 180, 240, 300, 360, 480, 600, 720, 1440, 1500, 1560, 1620, 1680, 1740, 1800, 1860, 1920, 1980, 2040, 2100, 2160, 2220, 2280, 4320, 5760, 7200, 8640, 10080, 4320, 4320, 7200, 8640, 10080, 0];
+      var sum = [0, 60, 180, 360, 600, 900, 1260, 1740, 2340, 3060, 4500, 6000, 7560, 9180, 10860, 12600, 14400, 16260, 18180, 20160, 22200, 24300, 26460, 28680, 30960, 35280, 41040, 48240, 56880, 66960, 71280, 75600, 82800, 91440, 101520];
+      var checkLvs = [10, 18, 20, 27, 30, 32, 35];
+      var necessaryTime = 0
+      var lv = document.getElementById("lv").value;
+      var nokori = document.getElementById("nokori").value;
+      var nowtime = sum[lv - 1] + lvs[lv] - nokori
+      console.log(nowtime);
+      
+      for (let i = 0; i < (checkLvs.length); i++) {
+        necessaryTime = sum[checkLvs[i] - 1] - nowtime;
+        console.log(checkLvs[i], necessaryTime);
+        document.getElementById(`result_${checkLvs[i]}`).innerHTML = necessaryTime;
+      }
+
+
+      // var nokori10 = sum[10 - 1] - nowtime
+      // document.getElementById("result_10").innerHTML = nokori10
+
+    }
+  </script>
+</head>
+
+<body>
+  <input id="lv" type="number" placeholder="Lv(数値)">
+  <input id="nokori" type="number" placeholder="次のLvUPまでの分数(数値)">
+  <button type="button" onclick="result()"></button>
+  <br>
+  <br>
+  <table>
+    <tr>
+      <th>到達Lv</th>
+      <th>これからの必要時間</th>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td id="result_10">1000</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td id="result_18">1000</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td id="result_20">1000</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td id="result_27">1000</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td id="result_30">1000</td>
+    </tr>
+    <tr>
+      <td>32</td>
+      <td id="result_32">1000</td>
+    </tr>
+    <tr>
+      <td>35</td>
+      <td id="result_35">1000</td>
+    </tr>
+  </table>
+</body>
+
+</html>
