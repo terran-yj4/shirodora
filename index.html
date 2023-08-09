@@ -5,69 +5,185 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>城ドラ キャラLv 時間計算機</title>
+  <style>
+    .contents {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .item {
+      width: 180px;
+      text-align: left;
+    }
+
+    /* 005 */
+    .button005 a {
+      border-radius: 5px;
+      position: relative;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: 15px 0px;
+      max-width: 290px;
+      padding: 10px 25px;
+      color: #FFF;
+      transition: 0.3s ease-in-out;
+      font-weight: 600;
+      background: rgb(149, 202, 252);
+      background: linear-gradient(270deg, rgba(149, 202, 252, 1) 0%, rgba(107, 182, 255, 1) 100%);
+    }
+
+    .button005 a:hover {
+      background: rgb(117, 188, 255);
+      background: linear-gradient(270deg, rgba(117, 188, 255, 1) 0%, rgba(62, 159, 252, 1) 100%);
+    }
+
+    table {
+      width: 340px;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    table th:first-child {
+      border-radius: 5px 0 0 0;
+    }
+
+    table th:last-child {
+      border-radius: 0 5px 0 0;
+      border-right: 1px solid #3c6690;
+    }
+
+    table th {
+      text-align: center;
+      color: white;
+      background: linear-gradient(#829ebc, #225588);
+      border-left: 1px solid #3c6690;
+      border-top: 1px solid #3c6690;
+      border-bottom: 1px solid #3c6690;
+      box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.3) inset;
+      width: 25%;
+      padding: 10px 0;
+    }
+
+    table td {
+      text-align: center;
+      border-left: 1px solid #a8b7c5;
+      border-bottom: 1px solid #a8b7c5;
+      border-top: none;
+      box-shadow: 0px -3px 5px 1px #eee inset;
+      width: 25%;
+      padding: 10px 0;
+    }
+
+    table td:last-child {
+      border-right: 1px solid #a8b7c5;
+    }
+
+    table tr:last-child td:first-child {
+      border-radius: 0 0 0 5px;
+    }
+
+    table tr:last-child td:last-child {
+      border-radius: 0 0 5px 0;
+    }
+  </style>
   <script>
+    var toDHM = min => {
+      var day, hour, minute, dhm="";
+      day = Math.floor(min / 1440);
+      hour = Math.floor((min % 1440) / 60);
+      minute = (min % 1440) % 60;
+      if (day != 0) {
+        dhm += `${day}日`;
+      }
+      if (hour != 0) {
+        dhm += `${hour}時間`;
+      }
+      if (minute != 0) {
+        dhm += `${minute}分`;
+      }
+      // dhm = `${day}D`
+      return dhm
+    }
     var result = () => {
       var lvs = [0, 60, 120, 180, 240, 300, 360, 480, 600, 720, 1440, 1500, 1560, 1620, 1680, 1740, 1800, 1860, 1920, 1980, 2040, 2100, 2160, 2220, 2280, 4320, 5760, 7200, 8640, 10080, 4320, 4320, 7200, 8640, 10080, 0];
       var sum = [0, 60, 180, 360, 600, 900, 1260, 1740, 2340, 3060, 4500, 6000, 7560, 9180, 10860, 12600, 14400, 16260, 18180, 20160, 22200, 24300, 26460, 28680, 30960, 35280, 41040, 48240, 56880, 66960, 71280, 75600, 82800, 91440, 101520];
       var checkLvs = [10, 18, 20, 27, 30, 32, 35];
-      var necessaryTime = 0
+      var necessaryTime = 0;
       var lv = document.getElementById("lv").value;
       var nokori = document.getElementById("nokori").value;
-      var nowtime = sum[lv - 1] + lvs[lv] - nokori
+      var nowtime = sum[lv - 1] + lvs[lv] - nokori;
       console.log(nowtime);
-      
+
+      // 到達Lvに必要な時間計算
       for (let i = 0; i < (checkLvs.length); i++) {
         necessaryTime = sum[checkLvs[i] - 1] - nowtime;
         console.log(checkLvs[i], necessaryTime);
-        document.getElementById(`result_${checkLvs[i]}`).innerHTML = necessaryTime;
+        document.getElementById(`result_${checkLvs[i]}`).innerHTML = toDHM(necessaryTime);
       }
 
-
-      // var nokori10 = sum[10 - 1] - nowtime
-      // document.getElementById("result_10").innerHTML = nokori10
-
+      // カウントストップ(次レベル時)
+      console.log(Number(nokori), lvs[Number(lv) + 1]);
+      necessaryTime = Number(nokori) + lvs[Number(lv) + 1] - 1;
+      document.getElementById("result_count_stop").innerHTML = toDHM(necessaryTime);
     }
   </script>
 </head>
 
 <body>
-  <input id="lv" type="number" placeholder="Lv(数値)">
-  <input id="nokori" type="number" placeholder="次のLvUPまでの分数(数値)">
-  <button type="button" onclick="result()"></button>
-  <br>
+  <h2>城ドラ 計算機 ver1.0</h2>
+  <div class="contents">
+    <div class="item">
+      <h4>キャラLv</h4>
+      <input id="lv" type="number" placeholder="Lv(数値)">
+    </div>
+    <div class="item">
+      <h4>LvUPまでの分数</h4>
+      <input id="nokori" type="number" placeholder="次のLvUPまでの分数(数値)">
+    </div>
+  </div>
+  <div class="button005">
+    <a href="javascript:result();">時間を計算する</a>
+  </div>
   <br>
   <table>
     <tr>
       <th>到達Lv</th>
-      <th>これからの必要時間</th>
+      <th>残りの必要時間</th>
     </tr>
     <tr>
       <td>10</td>
-      <td id="result_10">1000</td>
+      <td id="result_10">-</td>
     </tr>
     <tr>
       <td>18</td>
-      <td id="result_18">1000</td>
+      <td id="result_18">-</td>
     </tr>
     <tr>
       <td>20</td>
-      <td id="result_20">1000</td>
+      <td id="result_20">-</td>
     </tr>
     <tr>
       <td>27</td>
-      <td id="result_27">1000</td>
+      <td id="result_27">-</td>
     </tr>
     <tr>
       <td>30</td>
-      <td id="result_30">1000</td>
+      <td id="result_30">-</td>
     </tr>
     <tr>
       <td>32</td>
-      <td id="result_32">1000</td>
+      <td id="result_32">-</td>
     </tr>
     <tr>
       <td>35</td>
-      <td id="result_35">1000</td>
+      <td id="result_35">-</td>
+    </tr>
+    <tr>
+      <td>until the count stop
+      </td>
+      <td id="result_count_stop">-</td>
     </tr>
   </table>
 </body>
